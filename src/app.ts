@@ -12,7 +12,7 @@ app.use(bodyParser.text());
 app.get('/twitter/auth', (req, res) => {
     const client = new TwitterApi({ appKey: process.env.APP_KEY, appSecret: process.env.APP_SECRET });
     client.generateAuthLink('oob', { linkMode: 'authorize' }).then(r => {
-        res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000', 'https://nostrwitter.onrender.com'])
+        res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
         res.send(r);
     }, error => {
         console.log(error)
@@ -32,7 +32,7 @@ app.post('/twitter/tweet', (req: any, res) => {
 
     const client = new TwitterApi(tokens);
 
-    res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000', 'https://nostrwitter.onrender.com'])
+    res.setHeader('Access-Control-Allow-Origin','https://nostrwitter.onrender.com')
     client.login(pin).then(r => {
             console.log(
                 r.client.v1.tweet(post)
