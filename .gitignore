@@ -1,0 +1,5 @@
+.idea
+.env.local
+*.iml
+dist
+node_modules
