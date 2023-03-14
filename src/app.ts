@@ -13,7 +13,7 @@ app.get('/twitter/auth', (req, res) => {
 
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
     const client = new TwitterApi({ appKey: process.env.APP_KEY, appSecret: process.env.APP_SECRET });
-    client.generateAuthLink('oob', { linkMode: 'authorize' }).then(r => {
+    client.generateAuthLink('https://nostrwitter.onrender.com/twitterCallback', { linkMode: 'authorize' }).then(r => {
         res.send(r);
     }, error => {
         console.log(error)
