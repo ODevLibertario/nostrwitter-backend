@@ -22,19 +22,21 @@ app.get('/twitter/auth', (req, res) => {
 });
 
 app.post('/twitter/tweet', (req: any, res) => {
-    const {pin, oauth_token, oauth_token_secret, post} = JSON.parse(req.body);
+    const {oauthToken, oauthTokenSecret, oauthVerifier, post} = JSON.parse(req.body);
 
     const tokens: TwitterApiTokens = {
         appKey: process.env.APP_KEY,
         appSecret: process.env.APP_SECRET,
-        accessToken: oauth_token,
-        accessSecret: oauth_token_secret,
+        accessToken: oauthToken,
+        accessSecret: oauthTokenSecret
     }
+
+    console.log(tokens)
 
     const client = new TwitterApi(tokens);
 
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
-    client.login(pin).then(r => {
+    client.login(oauthVerifier).then(r => {
             console.log(
                 r.client.v1.tweet(post)
                     .then(r => {
