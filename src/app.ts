@@ -9,7 +9,7 @@ require('dotenv').config()
 const app = express();
 const port = Number(process.env.PORT) || 3333;
 
-app.use(bodyParser.text());
+app.use(bodyParser.text({limit: '20mb'}));
 
 app.get('/twitter/auth', (req, res) => {
 
