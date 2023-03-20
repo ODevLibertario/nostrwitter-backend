@@ -49,7 +49,9 @@ app.post('/twitter/tweet', (req: any, res) => {
                 imageType = EUploadMimeType.Gif
             }
 
-            r.client.v1.uploadMedia(Buffer.from(imageBase64, 'base64'), {mimeType: imageType}).then(mediaId =>
+            const imageBase64Content = imageBase64.split(",")[1]
+
+            r.client.v1.uploadMedia(Buffer.from(imageBase64Content, 'base64'), {mimeType: imageType}).then(mediaId =>
                 r.client.v1.tweet(post, {media_ids: [mediaId]}).then(r => res.send(r), error => res.send(error))
             ).catch(r => res.send(r))
         }else{
