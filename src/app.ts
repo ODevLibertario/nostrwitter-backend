@@ -41,7 +41,7 @@ app.post('/twitter/tweet', (req: any, res) => {
         if(imageBase64){
             let imageType = undefined
 
-            if(imageBase64.contains("jpeg")){
+            if(imageBase64.contains("jpeg") || imageBase64.contains("jpg")){
                 imageType = EUploadMimeType.Jpeg
             } else if (imageBase64.contains("png")){
                 imageType = EUploadMimeType.Png
