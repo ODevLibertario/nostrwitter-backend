@@ -41,11 +41,11 @@ app.post('/twitter/tweet', (req: any, res) => {
         if(imageBase64){
             let imageType = undefined
 
-            if(imageBase64.contains("jpeg") || imageBase64.contains("jpg")){
+            if(imageBase64.includes("jpeg") || imageBase64.includes("jpg")){
                 imageType = EUploadMimeType.Jpeg
-            } else if (imageBase64.contains("png")){
+            } else if (imageBase64.includes("png")){
                 imageType = EUploadMimeType.Png
-            } else if (imageBase64.contains("gif")){
+            } else if (imageBase64.includes("gif")){
                 imageType = EUploadMimeType.Gif
             }
 
@@ -64,7 +64,7 @@ app.get('/ping', (req: any, res) => {
     res.send('pong!')
 })
 
-app.post('/upload', (req: any, res) => {
+app.post('imgur/upload', (req: any, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
     const imgurClient = new ImgurClient({ clientId: 'bfd3861f722121a'/*process.env.IMGUR_CLIENT_ID*/ });
 
