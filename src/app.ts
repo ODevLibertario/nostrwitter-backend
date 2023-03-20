@@ -51,7 +51,7 @@ app.post('/twitter/tweet', (req: any, res) => {
 
             r.client.v1.uploadMedia(Buffer.from(imageBase64, 'base64'), {mimeType: imageType}).then(mediaId =>
                 r.client.v1.tweet(post, {media_ids: [mediaId]}).then(r => res.send(r), error => res.send(error))
-            )
+            ).catch(r => res.send(r))
         }else{
             r.client.v1.tweet(post)
                 .then(r => res.send(r), error => res.send(error));
@@ -64,7 +64,7 @@ app.get('/ping', (req: any, res) => {
     res.send('pong!')
 })
 
-app.post('imgur/upload', (req: any, res) => {
+app.post('/imgur/upload', (req: any, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
     const imgurClient = new ImgurClient({ clientId: 'bfd3861f722121a'/*process.env.IMGUR_CLIENT_ID*/ });
 
