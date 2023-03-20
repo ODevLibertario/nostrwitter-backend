@@ -33,7 +33,6 @@ app.post('/twitter/tweet', (req: any, res) => {
         accessSecret: oauthTokenSecret
     }
 
-    console.log(tokens)
 
     const client = new TwitterApi(tokens);
 
@@ -70,8 +69,6 @@ app.post('/upload', (req: any, res) => {
     const imgurClient = new ImgurClient({ clientId: 'bfd3861f722121a'/*process.env.IMGUR_CLIENT_ID*/ });
 
     const {imageBase64} = JSON.parse(req.body);
-
-    console.log(typeof imageBase64)
 
     imgurClient.upload({image: imageBase64, type: "base64"})
         .then((r) => res.send(r.data.link))
