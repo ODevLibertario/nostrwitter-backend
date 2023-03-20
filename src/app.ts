@@ -23,7 +23,7 @@ app.get('/twitter/auth', (req, res) => {
 });
 
 app.post('/twitter/tweet', (req: any, res) => {
-    const {oauthToken, oauthTokenSecret, oauthVerifier, post} = JSON.parse(req.body);
+    const {oauthToken, oauthTokenSecret, oauthVerifier, post, imageBase64} = JSON.parse(req.body);
 
     const tokens: TwitterApiTokens = {
         appKey: process.env.APP_KEY,
@@ -38,11 +38,14 @@ app.post('/twitter/tweet', (req: any, res) => {
 
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
     client.login(oauthVerifier).then(r => {
-            console.log(
-                r.client.v1.tweet(post)
-                    .then(r => {
-                        res.send(r)
-                    }, error => res.send(error)))
+        if(imageBase64){
+            r.client.v1.uploadMedia(Buffer.from(imageBase64, 'base64')).then(mediaId =>
+                r.client.v1.tweet(post, {media_ids: [mediaId]}).then(r => res.send(r), error => res.send(error))
+            )
+        }else{
+            r.client.v1.tweet(post)
+                .then(r => res.send(r), error => res.send(error));
+        }
     }, error => res.send(error))
 });
 
