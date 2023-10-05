@@ -12,7 +12,6 @@ const port = Number(process.env.PORT) || 3333;
 app.use(bodyParser.text({limit: '20mb'}));
 
 app.get('/twitter/auth', (req, res) => {
-
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
     const client = new TwitterApi({ appKey: process.env.APP_KEY, appSecret: process.env.APP_SECRET });
     client.generateAuthLink('https://nostrwitter.onrender.com', { linkMode: 'authorize' }).then(r => {
@@ -52,10 +51,10 @@ app.post('/twitter/tweet', (req: any, res) => {
             const imageBase64Content = imageBase64.split(",")[1]
 
             r.client.v1.uploadMedia(Buffer.from(imageBase64Content, 'base64'), {mimeType: imageType}).then(mediaId =>
-                r.client.v1.tweet(post, {media_ids: [mediaId]}).then(r => res.send(r), error => res.send(error))
+                r.client.v2.tweet(post, {media: {media_ids: [mediaId]}}).then(r => res.send(r), error => res.send(error))
             ).catch(r => res.send(r))
         }else{
-            r.client.v1.tweet(post)
+            r.client.v2.tweet(post)
                 .then(r => res.send(r), error => res.send(error));
         }
     }, error => res.send(error))
