@@ -26,7 +26,7 @@ app.post('/twitter/tweet', (req: any, res) => {
     const client = new TwitterApi({ clientId: process.env.CLIENT_ID, clientSecret: process.env.CLIENT_SECRET });
 
     res.setHeader('Access-Control-Allow-Origin', 'https://nostrwitter.onrender.com')
-    
+
     client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'https://nostrwitter.onrender.com' }).then(r => {
         if(imageBase64){
             let imageType = undefined
@@ -42,7 +42,7 @@ app.post('/twitter/tweet', (req: any, res) => {
             const imageBase64Content = imageBase64.split(",")[1]
 
             r.client.v1.uploadMedia(Buffer.from(imageBase64Content, 'base64'), {mimeType: imageType}).then(mediaId =>
-                r.client.v2.tweet({text: post, media: {media_ids: [mediaId]}}).then(r => res.send(r), error => res.send(error))
+                r.client.v2.tweet({text: post, media: {media_ids: [mediaId]}}).then(r => res.send(r.data), error => res.send(error))
             ).catch(r => res.send(r))
         }else{
             r.client.v2.tweet({text: post}).then(r => res.send(r.data), error => res.send(error));
